@@ -13,6 +13,7 @@ link_with_backup .bashrc
 link_with_backup .bash_profile
 link_with_backup .gitconfig
 link_with_backup .gitignore_global
+install_leiningen
 
 if [[ "$USER" != "d3andreas" ]]; then
     unset_git_user
