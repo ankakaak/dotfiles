@@ -51,6 +51,7 @@ function install_leiningen {
 				echo "Error installing leiningen: Neither wget nor curl found"
 			else
 				$HTTP_CLIENT "$TARGET" "$LEIN_SCRIPT_URL"
+				chmod +x $TARGET
 			fi
 		fi
     )
