@@ -25,6 +25,7 @@ LIGHT_GREEN="\[\033[1;32m\]"
      done < "$HOME/.path"
      export PATH="$path"
  fi
+
  
  # Local system stuff
  if [ -e ~/.bash_local ]; then
@@ -145,6 +146,11 @@ if [[ "$(uname)" == "Darwin" ]]; then
     alias la="ls -ahFG"
     alias ll="ls -lahFG"
     alias d="pwd && echo && ls -FG"
+	if hash mvn 2>/dev/null; then
+		echo ""
+	else
+		alias mvn="mvn3"
+	fi
 else
     alias l="ls --color -F"
     alias ls="ls --color -F"
@@ -156,6 +162,8 @@ fi
 alias rm='rm -i'
 
 alias beep="echo -e '\a'"
+
+alias fact="curl -s randomfunfacts.com | sed -n 's/.*<i>\(.*\)<\/i>.*/\1/p'"
 
 alias reload="colorString -c green sourcing .bashrc && source ~/.bashrc"
 
@@ -215,5 +223,72 @@ function ssh-reagent {
 #export LSCOLORS=${LSCOLORS:-ExFxCxDxBxegedabagacad}
 #export CLICOLOR=1
 #export LSCOLORS=GxFxCxDxBxegedabagaced
+
+
+# GIT Aware prompt
+########################
+
+# Detect whether the current directory is a git repository.
+function is_git_repository {
+  git branch > /dev/null 2>&1
+}
+
+function set_git_branch {
+  # Capture the output of the "git status" command.
+  git_status="$(git status 2> /dev/null)"
+
+  # Set color based on clean/staged/dirty.
+  if [[ ${git_status} =~ "working directory clean" ]]; then
+        state="${BLUE}"
+  elif [[ ${git_status} =~ "Changes to be committed" ]]; then
+        state="${RED}"
+        elif [[ ${git_status} =~ "no changes added to commit" ]]; then
+        state="${YELLOW}"        
+  else
+        state="${RED}"
+  fi
+  
+  # Set arrow icon based on status against remote.
+  remote_pattern="# Your branch is (.*) of"
+  if [[ ${git_status} =~ ${remote_pattern} ]]; then
+if [[ ${BASH_REMATCH[1]} == "ahead" ]]; then
+remote="↑"
+    else
+remote="↓"
+    fi
+else
+remote=""
+  fi
+diverge_pattern="# Your branch and (.*) have diverged"
+  if [[ ${git_status} =~ ${diverge_pattern} ]]; then
+remote="↕"
+  fi
+  
+  # Get the name of the branch.
+  branch_pattern="^# On branch ([^${IFS}]*)"
+  if [[ ${git_status} =~ ${branch_pattern} ]]; then
+branch=${BASH_REMATCH[1]}
+  fi
+
+  # Set the final branch string.
+  BRANCH="${state}[${branch}]${remote}${COLOR_NONE} "
+}
+
+function set_git_enabled_prompt () {
+
+  # Set the BRANCH variable.
+  if is_git_repository ; then
+        set_git_branch
+  else
+        BRANCH=' '
+  fi
+  
+  # Set the bash prompt variable.
+  PS1="\[\e[$((32-${?}))m\]\w\[\e[0m\]${BRANCH}\$ "
+}
+
+# Bind prompt-commands
+export PROMPT_COMMAND="set_git_enabled_prompt; $PROMPT_COMMAND"
+#export PROMPT_COMMAND="_execute_dirrc; $PROMPT_COMMAND"
 
 

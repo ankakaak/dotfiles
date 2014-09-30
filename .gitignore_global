@@ -70,3 +70,8 @@ $RECYCLE.BIN/
 #JetBrains
 .idea
 *.iml
+
+#Leiningen
+.lein-repl-history
+.lein-failures
+.lein-deps-sum

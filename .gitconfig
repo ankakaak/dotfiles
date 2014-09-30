@@ -21,6 +21,10 @@
 	ls = ls-files
 	# Show files ignored by git:
 	ign = ls-files -o -i --exclude-standard
+[url "git@mimisbrunnr.teleplan.no:"]
+  insteadOf = "tpgit:"
+[url "noragit@mimisbrunnr.teleplan.no:"]
+  insteadOf = "noragit:"
 [color "branch"]
 	current = yellow reverse
 	local = yellow
@@ -31,3 +35,5 @@
 [mergetool "sourcetree"]
 	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+[push]
+	default = matching
