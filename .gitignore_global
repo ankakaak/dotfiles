@@ -75,3 +75,8 @@ $RECYCLE.BIN/
 .lein-repl-history
 .lein-failures
 .lein-deps-sum
+
+
+#Docker
+Dockerfile
+.dockerignore

@@ -5,3 +5,5 @@
 /usr/sbin
 /sbin
 /usr/local/bin
+/usr/local/heroku/bin
+/Users/d3andreas/.lein
