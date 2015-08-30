@@ -265,10 +265,10 @@ remote="↕"
   fi
   
   # Get the name of the branch.
-  branch_pattern="^# On branch ([^${IFS}]*)"
-  if [[ ${git_status} =~ ${branch_pattern} ]]; then
-branch=${BASH_REMATCH[1]}
-  fi
+branch_pattern="^On branch ([^${IFS}]*)"
+if [[ ${git_status} =~ ${branch_pattern} ]]; then
+	branch=${BASH_REMATCH[1]}
+fi
 
   # Set the final branch string.
   BRANCH="${state}[${branch}]${remote}${COLOR_NONE} "
@@ -292,3 +292,6 @@ export PROMPT_COMMAND="set_git_enabled_prompt; $PROMPT_COMMAND"
 #export PROMPT_COMMAND="_execute_dirrc; $PROMPT_COMMAND"
 
 
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
